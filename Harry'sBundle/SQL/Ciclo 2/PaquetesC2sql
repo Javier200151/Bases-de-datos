@@ -1,0 +1,109 @@
+CREATE OR REPLACE PACKAGE PC_Foro IS
+    PROCEDURE AD_Foro(XidCliente IN NUMBER, Xdetalle IN XMLTYPE);
+    PROCEDURE MO_Foro(Xnumero IN NUMBER, Xdetalle IN XMLTYPE);
+    PROCEDURE EL_Foro(Xnumero IN NUMBER);
+    PROCEDURE AD_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER, Xcomentario IN VARCHAR);
+    PROCEDURE MO_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER, Xcomentario IN VARCHAR);
+    PROCEDURE EL_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER);
+    PROCEDURE AD_Noticia(XnumeroNoticia IN NUMBER, Xtema IN VARCHAR);
+    PROCEDURE AD_Guia(XnumeroGuia IN NUMBER, XnumeroJuego IN NUMBER, Xtipo IN VARCHAR);
+    PROCEDURE AD_Fuente(XnumeroNoticia IN NUMBER, XnumeroFuente IN NUMBER, XURL_ IN VARCHAR);
+    
+    FUNCTION CO_Foro RETURN SYS_REFCURSOR;
+
+END PC_Foro;
+
+CREATE SEQUENCE SECUENCIA_AUTO_foro
+START WITH 1
+INCREMENT BY 1;
+
+CREATE OR REPLACE PACKAGE BODY PC_Foro IS
+    PROCEDURE AD_Foro(XidCliente IN NUMBER, Xdetalle IN XMLTYPE) IS
+        BEGIN
+          INSERT INTO Foro VALUES(SECUENCIA_AUTO_foro.NEXTVAL, XidCliente, SYSDATE , Xdetalle);
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede insertar foro.');
+        END;
+    PROCEDURE MO_Foro(Xnumero IN NUMBER, Xdetalle IN XMLTYPE) IS
+        BEGIN
+          UPDATE Foro SET detalle=xdetalle WHERE Xnumero=numero;
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede actualizar detalle.');
+        END;
+    PROCEDURE EL_Foro(Xnumero IN NUMBER) IS
+        BEGIN
+          DELETE FROM Foro WHERE Xnumero=numero;
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede eliminar foro');
+        END;
+    PROCEDURE AD_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER, Xcomentario IN VARCHAR) IS
+        BEGIN
+          INSERT INTO Comentario VALUES(XnumeroForo, XnumeroComentario, Xcomentario);
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede insertar comentario.');
+        END;
+    PROCEDURE MO_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER, Xcomentario IN VARCHAR) IS
+        BEGIN
+          UPDATE Comentario SET comentario=Xcomentario WHERE XnumeroForo=numeroForo AND XnumeroComentario=numeroComentario;
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede actualizar comentario.');
+        END;
+    PROCEDURE EL_Comentario(XnumeroForo IN NUMBER, XnumeroComentario IN NUMBER) IS
+        BEGIN
+          DELETE FROM Comentario WHERE XnumeroForo=numeroForo AND XnumeroComentario=numeroComentario;
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede eliminar foro');
+        END;
+    PROCEDURE AD_Noticia(XnumeroNoticia IN NUMBER, Xtema IN VARCHAR) IS
+        BEGIN
+          INSERT INTO Noticia VALUES(XnumeroNoticia, Xtema);
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede insertar noticia.');
+        END;
+    PROCEDURE AD_Guia(XnumeroGuia IN NUMBER, XnumeroJuego IN NUMBER, Xtipo IN VARCHAR) IS
+        BEGIN
+          INSERT INTO Guia VALUES(XnumeroGuia, XnumeroJuego, Xtipo);
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede insertar guia.');
+        END;
+    PROCEDURE AD_Fuente(XnumeroNoticia IN NUMBER, XnumeroFuente IN NUMBER, XURL_ IN VARCHAR) IS
+        BEGIN
+          INSERT INTO Fuente VALUES(XnumeroNoticia, XnumeroFuente, XURL_);
+          COMMIT;
+        EXCEPTION
+          WHEN OTHERS THEN
+            ROLLBACK;
+              RAISE_APPLICATION_ERROR (-20039,'No se puede insertar fuente.');
+        END;
+    
+    FUNCTION CO_Foro RETURN SYS_REFCURSOR IS CO_F SYS_REFCURSOR;
+        BEGIN
+            OPEN CO_F FOR
+                SELECT * FROM Foro;
+            RETURN CO_F;
+        END;
+END PC_Foro;

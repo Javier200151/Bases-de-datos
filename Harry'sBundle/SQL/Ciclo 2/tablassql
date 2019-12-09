@@ -1,0 +1,53 @@
+CREATE TABLE Foro (numero NUMBER(5) NOT NULL, idCliente NUMBER(5) NOT NULL, fecha DATE NOT NULL, detalle XMLTYPE NOT NULL);
+CREATE TABLE Comentario(numeroForo NUMBER(5) NOT NULL, numeroComentario NUMBER(5) NOT NULL, comentario VARCHAR(50) NULL);
+CREATE TABLE Noticia(numeroNoticia NUMBER(5), tema VARCHAR(20));
+CREATE TABLE Guia(numeroGuia NUMBER(5), numeroJuego NUMBER(5), tipo VARCHAR(20));
+CREATE TABLE Fuente(numeroNoticia NUMBER(5), numeroFuente NUMBER(5), URL_ VARCHAR(500));
+
+DROP TABLE Foro;
+DROP TABLE Comentario;
+DROP TABLE Guia;
+DROP TABLE Noticia;
+DROP TABLE Fuente;
+ 
+BEGIN
+   FOR cur_rec IN (SELECT object_name, object_type
+                     FROM user_objects
+                    WHERE object_type IN
+                             ('TABLE',
+                              'VIEW',
+                              'PACKAGE',
+                              'PROCEDURE',
+                              'FUNCTION',
+                              'SEQUENCE',
+                              'SYNONYM',
+                              'PACKAGE BODY'
+                             ))
+   LOOP
+      BEGIN
+         IF cur_rec.object_type = 'TABLE'
+         THEN
+            EXECUTE IMMEDIATE    'DROP '
+                              || cur_rec.object_type
+                              || ' "'
+                              || cur_rec.object_name
+                              || '" CASCADE CONSTRAINTS';
+         ELSE
+            EXECUTE IMMEDIATE    'DROP '
+                              || cur_rec.object_type
+                              || ' "'
+                              || cur_rec.object_name
+                              || '"';
+         END IF;
+      EXCEPTION
+         WHEN OTHERS
+         THEN
+            DBMS_OUTPUT.put_line (   'FAILED: DROP '
+                                  || cur_rec.object_type
+                                  || ' "'
+                                  || cur_rec.object_name
+                                  || '"'
+                                 );
+      END;
+   END LOOP;
+END;

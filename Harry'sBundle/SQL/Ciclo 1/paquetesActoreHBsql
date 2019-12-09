@@ -1,0 +1,238 @@
+/*ActoresE*/
+CREATE OR REPLACE PACKAGE PA_ADMINISTRADOR IS
+
+    PROCEDURE AD_AdministradorRecibo(xcodigoCompra IN NUMBER, xcodigoProducto IN VARCHAR, xdescripcion IN VARCHAR);
+    PROCEDURE MO_AdministradorJuego(xcodigoJuego IN VARCHAR, xpaquete IN VARCHAR);
+    PROCEDURE MO_AdministradorRecibo(xcodigoCompra IN NUMBER, xcodigoProducto IN VARCHAR, xdescripcion IN VARCHAR);
+    PROCEDURE EL_AdministradorProducto(xcodigo IN NUMBER);
+    PROCEDURE EL_AdministradorJuego(xcodigoJuego IN VARCHAR);
+    PROCEDURE EL_AdministradorPaquete(xcodigoPaquete IN VARCHAR);
+    
+    FUNCTION CO_AdministradorCompra RETURN SYS_REFCURSOR;  
+    FUNCTION CO_AdministradorRecibo RETURN SYS_REFCURSOR;
+
+END PA_ADMINISTRADOR;
+
+CREATE OR REPLACE PACKAGE PA_GERENTE IS
+
+    PROCEDURE AD_GerenteCliente(xnid IN NUMBER, xtid IN CHAR, xnombre IN VARCHAR, xcorreo IN VARCHAR);
+    PROCEDURE AD_GerenteUsuario(xidUsuario IN NUMBER);
+    PROCEDURE AD_GerenteDesarrolladora(xidDesarrolladora IN NUMBER, XcodigoPago IN NUMBER);
+    PROCEDURE MO_GerenteCliente(xid_ IN NUMBER, xcorreo IN VARCHAR);
+
+    FUNCTION CO_GerenteCliente RETURN SYS_REFCURSOR;
+    FUNCTION CO_GerenteUsuario RETURN SYS_REFCURSOR;
+    FUNCTION CO_GerenteDesarrolladora RETURN SYS_REFCURSOR; 
+    
+END PA_GERENTE;
+
+CREATE OR REPLACE PACKAGE PA_USUARIO IS
+
+    PROCEDURE AD_UsuarioCompra(xvalor IN NUMBER, xpagadoPor IN NUMBER);
+    PROCEDURE MO_UsuarioUsuario(xidUsuario IN NUMBER, xapodoCuenta IN VARCHAR);
+
+    FUNCTION CO_UsuarioCompra  RETURN SYS_REFCURSOR;
+    FUNCTION CO_UsuarioRecibo  RETURN SYS_REFCURSOR;
+    FUNCTION CO_UsuarioJuegoEspecifico(Xtiempo IN NUMBER, xtipo IN VARCHAR, xcategoria IN VARCHAR, xvalor IN NUMBER)  RETURN SYS_REFCURSOR;
+    FUNCTION CO_UsuarioValorPaquete RETURN SYS_REFCURSOR;  
+    FUNCTION CO_UsuarioValorJuego RETURN SYS_REFCURSOR;
+    
+END PA_USUARIO;
+
+CREATE OR REPLACE PACKAGE PA_DESARROLLADORA IS
+
+    PROCEDURE AD_DesarrolladoraProducto(xnombre IN VARCHAR, xcalificacion IN NUMBER, xvalor IN NUMBER, xcomentario IN VARCHAR);
+    PROCEDURE AD_DesarrolladoraJuego(xcodigoJuego IN VARCHAR, xpaquete IN VARCHAR, xcategoria IN VARCHAR, xcreadoPor IN NUMBER, xdescripcion IN XMLTYPE);
+    PROCEDURE AD_DesarrolladoraLogro(xcodigoJuego IN VARCHAR, xnombreLogro IN VARCHAR, xdescripcion IN VARCHAR, xlogradoPor IN NUMBER);
+    PROCEDURE MO_DesarrolladoraProducto(xcodigo IN NUMBER, xcomentario IN VARCHAR);
+    PROCEDURE MO_DesarrolladoraJuego1(xcodigoJuego IN VARCHAR, xcategoria IN VARCHAR);
+    PROCEDURE MO_DesarrolladoraJuego2(xcodigoJuego IN VARCHAR, xcreadoPor IN NUMBER);
+    PROCEDURE MO_DesarrolladoraJuego3(xcodigoJuego IN VARCHAR, xdescripcion IN XMLTYPE);
+    PROCEDURE MO_DesarrolladoraLogro(xcodigoJuego IN VARCHAR, xdescripcion IN VARCHAR); 
+    PROCEDURE EL_DesarrolladoraLogro(xcodigoJuego IN VARCHAR) ;
+    
+    FUNCTION CO_DesarrolladoraLogro RETURN SYS_REFCURSOR;
+
+END PA_DESARROLLADORA;
+
+
+
+
+
+/*ActoresI*/
+
+CREATE OR REPLACE PACKAGE BODY PA_ADMINISTRADOR IS
+    PROCEDURE AD_AdministradorRecibo(xcodigoCompra IN NUMBER, xcodigoProducto IN VARCHAR, xdescripcion IN VARCHAR) IS
+        BEGIN
+            PC_COMPRA.AD_Recibo(xcodigoCompra, xcodigoProducto, xdescripcion);
+        END;
+    PROCEDURE MO_AdministradorJuego(xcodigoJuego IN VARCHAR, xpaquete IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.MO_Juego(xcodigoJuego , xpaquete );
+        END;
+    PROCEDURE MO_AdministradorRecibo(xcodigoCompra IN NUMBER, xcodigoProducto IN VARCHAR, xdescripcion IN VARCHAR) IS
+        BEGIN
+            PC_COMPRA.MO_Recibo(xcodigoCompra , xcodigoProducto , xdescripcion );
+        END;
+    PROCEDURE EL_AdministradorProducto(xcodigo IN NUMBER) IS
+        BEGIN
+            PC_PRODUCTO.EL_Producto(xcodigo );
+        END;
+    PROCEDURE EL_AdministradorJuego(xcodigoJuego IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.EL_Juego(xcodigoJuego );
+        END;
+    PROCEDURE EL_AdministradorPaquete(xcodigoPaquete IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.EL_Paquete(xcodigoPaquete);
+        END;
+    
+    FUNCTION CO_AdministradorCompra RETURN SYS_REFCURSOR IS CO_AdministradorCompra_ SYS_REFCURSOR;
+        BEGIN
+            CO_AdministradorCompra_:=PC_COMPRA.CO_Compra;
+            RETURN CO_AdministradorCompra_;
+        END;
+    FUNCTION CO_AdministradorRecibo RETURN SYS_REFCURSOR IS CO_AdministradorRecibo_ SYS_REFCURSOR ;
+        BEGIN
+            CO_AdministradorRecibo_:=PC_COMPRA.CO_Recibo;
+            RETURN CO_AdministradorRecibo_;
+        END;
+
+END PA_ADMINISTRADOR;
+
+CREATE OR REPLACE PACKAGE BODY PA_GERENTE IS
+
+    PROCEDURE AD_GerenteCliente(xnid IN NUMBER, xtid IN CHAR, xnombre IN VARCHAR, xcorreo IN VARCHAR)IS
+        BEGIN
+            PC_CLIENTE.AD_Cliente(xnid , xtid , xnombre, xcorreo );
+        END;
+    PROCEDURE AD_GerenteUsuario(xidUsuario IN NUMBER)IS
+        BEGIN
+            PC_CLIENTE.AD_Usuario(xidUsuario);
+        END;
+    PROCEDURE AD_GerenteDesarrolladora(xidDesarrolladora IN NUMBER, XcodigoPago IN NUMBER)IS
+        BEGIN
+            PC_CLIENTE.AD_Desarrolladora(xidDesarrolladora,XcodigoPago);
+        END;
+    PROCEDURE MO_GerenteCliente(xid_ IN NUMBER, xcorreo IN VARCHAR)IS
+        BEGIN
+            PC_CLIENTE.MO_Cliente(xid_,xcorreo);
+        END;
+        
+    FUNCTION CO_GerenteCliente RETURN SYS_REFCURSOR IS CO_GerenteCliente_ SYS_REFCURSOR;
+        BEGIN
+            CO_GerenteCliente_:=PC_CLIENTE.CO_Cliente;
+            RETURN CO_GerenteCliente_;
+        END;
+    FUNCTION CO_GerenteUsuario RETURN SYS_REFCURSOR IS CO_GerenteUsuario_ SYS_REFCURSOR;
+        BEGIN
+            CO_GerenteUsuario_:=PC_CLIENTE.CO_Usuario;
+            RETURN CO_GerenteUsuario_;
+        END;
+    FUNCTION CO_GerenteDesarrolladora RETURN SYS_REFCURSOR IS CO_GerenteDesarrolladora_ SYS_REFCURSOR;
+        BEGIN
+            CO_GerenteDesarrolladora_:=PC_CLIENTE.CO_Desarrolladora;
+            RETURN CO_GerenteDesarrolladora_;
+        END;
+    
+END PA_GERENTE;
+
+
+
+CREATE OR REPLACE PACKAGE BODY PA_USUARIO IS
+
+    PROCEDURE AD_UsuarioCompra(xvalor IN NUMBER, xpagadoPor IN NUMBER)IS
+        BEGIN
+            PC_COMPRA.AD_Compra(xvalor,xpagadoPor);
+        END;
+    PROCEDURE MO_UsuarioUsuario(xidUsuario IN NUMBER, xapodoCuenta IN VARCHAR)IS
+        BEGIN
+            PC_CLIENTE.MO_Usuario(xidUsuario,xapodoCuenta);
+        END;
+
+    FUNCTION CO_UsuarioCompra  RETURN SYS_REFCURSOR  IS CO_UsuarioCompra_ SYS_REFCURSOR;
+        BEGIN
+            CO_UsuarioCompra_:=PC_COMPRA.CO_Compra;
+            RETURN CO_UsuarioCompra_;
+        END;
+    FUNCTION CO_UsuarioRecibo  RETURN SYS_REFCURSOR  IS CO_UsuarioRecibo_ SYS_REFCURSOR;
+        BEGIN
+            CO_UsuarioRecibo_:=PC_COMPRA.CO_Recibo;
+            RETURN CO_UsuarioRecibo_;
+        END;
+    FUNCTION CO_UsuarioJuegoEspecifico(Xtiempo IN NUMBER, xtipo IN VARCHAR, xcategoria IN VARCHAR, xvalor IN NUMBER)  RETURN SYS_REFCURSOR  IS CO_UsuarioJuegoEspecifico_ SYS_REFCURSOR;
+        BEGIN
+            CO_UsuarioJuegoEspecifico_:=PC_PRODUCTO.CO_JuegoEspecifico (Xtiempo , xtipo , xcategoria , xvalor);
+            RETURN CO_UsuarioJuegoEspecifico_;
+        END;
+    FUNCTION CO_UsuarioValorPaquete RETURN SYS_REFCURSOR  IS CO_UsuarioValorPaquete_ SYS_REFCURSOR;
+        BEGIN
+            CO_UsuarioValorPaquete_:=PC_PRODUCTO.CO_ValorPaquete;
+            RETURN CO_UsuarioValorPaquete_;
+        END;  
+    FUNCTION CO_UsuarioValorJuego RETURN SYS_REFCURSOR  IS CO_UsuarioValorJuego_ SYS_REFCURSOR;
+        BEGIN
+            CO_UsuarioValorJuego_:=PC_PRODUCTO.CO_ValorJuego;
+            RETURN CO_UsuarioValorJuego_;
+        END;
+    
+END PA_USUARIO;
+
+CREATE OR REPLACE PACKAGE BODY PA_DESARROLLADORA IS
+
+    PROCEDURE AD_DesarrolladoraProducto(xnombre IN VARCHAR, xcalificacion IN NUMBER, xvalor IN NUMBER, xcomentario IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.AD_Producto(xnombre,xcalificacion,xvalor,xcomentario);
+        END;
+    PROCEDURE AD_DesarrolladoraJuego(xcodigoJuego IN VARCHAR, xpaquete IN VARCHAR, xcategoria IN VARCHAR, xcreadoPor IN NUMBER, xdescripcion IN XMLTYPE) IS
+        BEGIN
+            PC_PRODUCTO.AD_Juego(xcodigoJuego,xpaquete,xcategoria,xcreadoPor,xdescripcion);
+        END;
+    PROCEDURE AD_DesarrolladoraLogro(xcodigoJuego IN VARCHAR, xnombreLogro IN VARCHAR, xdescripcion IN VARCHAR, xlogradoPor IN NUMBER) IS
+        BEGIN
+            PC_LOGRO.AD_Logro(xcodigoJuego,xnombreLogro,xdescripcion,xlogradoPor);
+        END;
+    PROCEDURE MO_DesarrolladoraProducto(xcodigo IN NUMBER, xcomentario IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.MO_Producto(xcodigo,xcomentario);
+        END;
+    PROCEDURE MO_DesarrolladoraJuego1(xcodigoJuego IN VARCHAR, xcategoria IN VARCHAR) IS
+        BEGIN
+            PC_PRODUCTO.MO_Juego1(xcodigoJuego,xcategoria);
+        END;
+    PROCEDURE MO_DesarrolladoraJuego2(xcodigoJuego IN VARCHAR, xcreadoPor IN NUMBER) IS
+        BEGIN
+            PC_PRODUCTO.MO_Juego2(xcodigoJuego,xcreadoPor);
+        END;
+    PROCEDURE MO_DesarrolladoraJuego3(xcodigoJuego IN VARCHAR, xdescripcion IN XMLTYPE) IS
+        BEGIN
+            PC_PRODUCTO.MO_Juego3(xcodigoJuego,xdescripcion);
+        END;
+    PROCEDURE MO_DesarrolladoraLogro(xcodigoJuego IN VARCHAR, xdescripcion IN VARCHAR) IS
+        BEGIN
+            PC_LOGRO.MO_Logro(xcodigoJuego,xdescripcion);
+        END;
+    PROCEDURE EL_DesarrolladoraLogro(xcodigoJuego IN VARCHAR) IS
+        BEGIN
+            PC_LOGRO.EL_Logro(xcodigoJuego);
+        END;
+    
+    FUNCTION CO_DesarrolladoraLogro RETURN SYS_REFCURSOR IS CO_DesarrolladoraLogro_ SYS_REFCURSOR;
+        BEGIN
+            CO_DesarrolladoraLogro_:=PC_LOGRO.CO_Logro;
+            RETURN CO_DesarrolladoraLogro_;
+        END;
+
+END PA_DESARROLLADORA;
+
+/*SeguridadOk*/ 
+EXECUTE Pa_Desarrolladora.AD_DesarrolladoraProducto('GamePower',5,50000,'Me gusto');
+EXECUTE PA_USUARIO.AD_UsuarioCompra(50000,1);
+
+GRANT EXECUTE ON PA_DESARROLLADORA TO  bd2160666;
+GRANT EXECUTE ON PA_USUARIO TO  bd2161335;
+
+DROP PACKAGE PA_ADMINISTRADOR;
+DROP PACKAGE PA_GERENTE;
+DROP PACKAGE PA_USUARIO;
+DROP PACKAGE PA_DESARROLLADORA;

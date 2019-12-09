@@ -1,0 +1,27 @@
+CREATE OR REPLACE PACKAGE PA_Cliente IS
+    PROCEDURE AD_ClienteForo(xidCliente IN NUMBER, xdetalle IN XMLTYPE);
+    PROCEDURE MO_ClienteForo(xnumero IN NUMBER, xdetalle IN XMLTYPE);
+    PROCEDURE AD_ClienteComentario(xnumeroForo IN NUMBER, xnumeroComentario IN NUMBER, xcomentario IN VARCHAR);
+    
+    FUNCTION CO_ClienteForo RETURN SYS_REFCURSOR;
+END PA_Cliente;
+
+CREATE OR REPLACE PACKAGE BODY PA_Cliente IS
+    PROCEDURE AD_ClienteForo(xidCliente IN NUMBER, xdetalle IN XMLTYPE) IS
+        BEGIN
+            PC_Foro.AD_Foro(xidCliente,xdetalle);
+        END;
+    PROCEDURE MO_ClienteForo(xnumero IN NUMBER, xdetalle IN XMLTYPE) IS
+        BEGIN
+            PC_Foro.MO_Foro(xnumero, xdetalle);
+        END;
+    PROCEDURE AD_ClienteComentario(xnumeroForo IN NUMBER, xnumeroComentario IN NUMBER, xcomentario IN VARCHAR) IS
+        BEGIN
+            PC_Foro.AD_Comentario(xnumeroForo, xnumeroComentario, xcomentario);
+        END;
+    FUNCTION CO_ClienteForo RETURN SYS_REFCURSOR IS CO_CF SYS_REFCURSOR;
+        BEGIN
+            CO_CF:=PC_Foro.CO_Foro;
+            RETURN CO_CF;
+        END;
+END PA_Cliente;

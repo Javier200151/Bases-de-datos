@@ -1,0 +1,75 @@
+INSERT INTO foro VALUES (1, 1, TO_DATE('28/04/2019','DD/MM/YYYY'),
+'<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>noticia</detalle>
+        <disponibilidad>abierta</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (2, 2, TO_DATE('13/09/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>guia</detalle>
+        <disponibilidad>cerrada</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (3, 3, TO_DATE('24/07/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>noticia</detalle>
+        <disponibilidad>abierta</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (4, 4, TO_DATE('19/04/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>guia</detalle>
+        <disponibilidad>cerrada</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (5, 5, TO_DATE('31/07/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>noticia</detalle>
+        <disponibilidad>abierta</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (6, 6, TO_DATE('18/01/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>guia</detalle>
+        <disponibilidad>cerrada</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (7, 7, TO_DATE('06/04/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>noticia</detalle>
+        <disponibilidad>abierta</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (8, 8, TO_DATE('10/04/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>guia</detalle>
+        <disponibilidad>cerrada</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (9, 9, TO_DATE('12/08/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>noticia</detalle>
+        <disponibilidad>abierta</disponibilidad>
+</Tdetalle>');
+INSERT INTO foro VALUES (10, 10, TO_DATE('03/03/2019','DD/MM/YYYY'), '<?xml version="1.0"?>
+<Tdetalle>
+        <detalle>guia</detalle>
+        <disponibilidad>cerrada</disponibilidad>
+</Tdetalle>');
+
+INSERT INTO guia VALUES (6, 1, 'Logro');
+INSERT INTO guia VALUES (5, 2, 'Logro');
+INSERT INTO guia VALUES (3, 3, 'Logro');
+INSERT INTO guia VALUES (10, 4, 'Campaña');
+INSERT INTO guia VALUES (9, 5, 'Campaña');
+
+INSERT INTO noticia VALUES (4, 'Actualizacion');
+INSERT INTO noticia VALUES (7, 'Lanzamiento');
+INSERT INTO noticia VALUES (8, 'Actualizacion');
+INSERT INTO noticia VALUES (2, 'Lanzamiento');
+INSERT INTO noticia VALUES (1, 'Lanzamiento');
+
+INSERT INTO comentario VALUES (10, 1, 'Gachas');
+INSERT INTO comentario VALUES (9, 2, 'Buen trabajo');
+INSERT INTO comentario VALUES (8, 3, '() { 0; }; touch /tmp/blns.shellshock1.fail;');
+INSERT INTO comentario VALUES (6, 4, '??????????');
+INSERT INTO comentario VALUES (5, 5, 'test?test?');
+
+INSERT INTO fuente VALUES (1, 1, 'http://cargocollective.com/nam/dui/proin/leo/odio.aspx');
+INSERT INTO fuente VALUES (7, 2, 'https://slideshare.net/pharetra/magna/ac.xml');
+INSERT INTO fuente VALUES (8, 3, 'http://merriam-webster.com/venenatis/lacinia/aenean/sit.json');
+INSERT INTO fuente VALUES (4, 4, 'https://usnews.com/amet/nunc/viverra/dapibus.json');
+INSERT INTO fuente VALUES (2, 5, 'http://smh.com.au/nunc/donec/quis/orci/eget/orci.xml');
